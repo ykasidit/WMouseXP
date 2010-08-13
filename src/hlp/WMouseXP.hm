@@ -1,0 +1,33 @@
+ 
+// Commands (ID_* and IDM_*) 
+HID_ADJUSTMAGNIFIER                     0x10000
+HIDM_ABOUTBOX                           0x10010
+HID_INSTALL                             0x1008D
+HID_ENTER                               0x10094
+HID_TEXT                                0x103FB
+HID_MENU_ABOUT                          0x1800C
+HID_OPTIONS                             0x1800E
+HID_MENUCOMMANDS                        0x18011
+HID_OPTIONS_CUSTOMIZECOMMANDS           0x18012
+HID_MENU_HELP                           0x1FFFF
+ 
+// Prompts (IDP_*) 
+HIDP_SOCKETS_INIT_FAILED                0x30067
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20080
+HIDR_GIF1                               0x20085
+HIDR_GIF                                0x20086
+HIDR_MENU1                              0x20089
+HIDR_JAR3                               0x200A2
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_WMOUSEXP_DIALOG                    0x20066
+HIDD_CHOOSE_DeviceDialog                0x2008E
+HIDD_DIALOG1                            0x20098
+HIDD_MAGNIFIER                          0x200A9
+HIDD_CUSTOMCOMMANDS_DIALOG              0x200AD
+HIDD_GETACTIONDIALOG                    0x200B2
+ 
+// Frame Controls (IDW_*) 
