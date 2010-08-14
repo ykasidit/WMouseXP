@@ -33,7 +33,7 @@ How to start using
 
 **DONE! Move your phone's joystick and see your PC's mouse cursor magically move on your PC - try double-clicking, opening and closing stuff on your computer from your phone**
 
-*Test it - Open a Powerpoint Presentation, press 3 on the phone to start the presentation, click/press the phone's joystick to go to the next step/slide, press 2 to go back, press 1 to exit.*
+*Test it - Open a Powerpoint or [OpenOffice](http://www.openoffice.org/) Presentation, press 3 on the phone to start the presentation, click/press the phone's joystick to go to the next step/slide, press 2 to go back, press 1 to exit.*
 
 For a WIFI version: please try [AgilePresenter WIFI Remote](http://www.clearevo.com/agilepresenter/).
 
