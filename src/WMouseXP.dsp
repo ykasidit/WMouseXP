@@ -476,47 +476,7 @@ SOURCE=.\res\WMouseXP.rc2
 # End Group
 # Begin Source File
 
-SOURCE=.\res\eWebClient.dll
-# End Source File
-# Begin Source File
-
-SOURCE=.\ReadMe.txt
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\WMouseXP.jar
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\png\Release\png.lib
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\jpeg\Release\Jpeg.lib
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\jasper\Release\jasper.lib
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\mng\Release\mng.lib
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\tiff\Release\Tiff.lib
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\zlib\Release\zlib.lib
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\raw\Release\libdcr.lib
-# End Source File
-# Begin Source File
-
-SOURCE=..\cximage600_full\CxImage\Release\cximage.lib
 # End Source File
 # End Target
 # End Project
