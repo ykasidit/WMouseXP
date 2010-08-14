@@ -72,7 +72,7 @@ In the past WMouseXP was a shareware program. Now, since my work has got much mo
 
 Apart from that, I need much more focus on my work and peaceful rest on weekends. I don't want to have conflicts/distraction of "commercial"/demanding/committed interest/efforts with my job/specialization. Happiness comes whan you are satisfied with what you have - after working moderately/balanced - not too much/less - so I think it should be "enough" commercial work to focus on my job. 
 
-Another point that touched me was solving licence activation problems (of the DRM anti-features) especially when the customer already bought the trial and then can't use it because of the DRM - and has to mail the support, wait, work hard to try solutions, just to get over the DRM.
+Another point that touched me was solving licence activation problems (of the DRM anti-features) especially when the customer already bought the full-version serial and then can't use it because of the DRM - and has to mail the support, wait, work hard to try solutions, just to get over the DRM.
 
 As now I don't have personal commercial/closed apps to distract me, I hope I can use more weekends time on learning GSM/WCDMA and related free-software/open-source projects: trying OsmocomBB, OpenBSC, etc. Also, use more time away from the computer (as I easily have neck-pain when using the computer after many years of coding and sitting too long) by jogging, cooking, travel and my home-brewed biodiesel hobby.
 
