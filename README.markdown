@@ -72,6 +72,8 @@ Unfortunately, at the time I started coding WMouseXP a long time back when I was
 
 I hope one day some helpful programmer or myself can port this app to Qt so we can easily port it to Ubuntu GNU/Linux - it should be somewhat easier by modifying Ookjor's source-code - <http://github.com/ykasidit/Ookjor> - and using its same bluetooth-engine: <http://wiki.github.com/ykasidit/PatienceBTEngine/>.
 
+As for the mobile-side j2me client - use [Netbeans IDE](http://www.netbeans.org/) to compile/build it.
+
 History
 =======
 In the past WMouseXP was a shareware program. Now, since my work has got much more deep and challenging - developing network-test app engines decoding GSM RR/CC/MM, WCDMA RRC, vendor-specific L1 packets, I came to learn much more from the Free-Software/Open-source world - and now mainly using Ubuntu GNU/Linux. Now I want to give my small contribution back to the society too - so I release it under GPL. 
