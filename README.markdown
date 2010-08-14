@@ -39,7 +39,7 @@ License
 =======
 Starting from version 3.0 - WMouseXP is now FREE SOFTWARE - GNU GPL:
 
-[!GNU GPL](http://www.clearevo.com/incallert/gplv3-127x51.png)
+![GNU GPL](http://www.clearevo.com/incallert/gplv3-127x51.png)
 
 Copyright (C) 2007-2010 Kasidit Yusuf.
 
