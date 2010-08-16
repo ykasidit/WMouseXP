@@ -663,7 +663,7 @@ BOOL CWMouseXPDlg::OnInitDialog()
 
 	
 	DefaultCmdKeyMap();
-	//RefreshMonitorsMetrics();
+	RefreshMonitorsMetrics();
 	LoadCustomCommands();
 
 	iAutoConnectCommand = false;
