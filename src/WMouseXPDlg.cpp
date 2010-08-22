@@ -356,7 +356,7 @@ CWMouseXPDlg::CWMouseXPDlg(CWnd* pParent /*=NULL*/)
 
 	iJoyRepeatedForRightClick = false;
 
-	m_TrialTimerID =0;
+
 	iRegThreadID = 0;
 
 	 m_pToolTip = NULL;
@@ -1326,30 +1326,6 @@ bool CWMouseXPDlg::StartBTInteractionTimer()
 }
 
 
-bool CWMouseXPDlg::StartTrialTimer()
-{
-	
-	m_TrialTimerID = SetTimer(14/*any identifier because we have only one timer*/, 3*60 * 1000, TrialTimerProc);
-
-	if(m_TrialTimerID)
-		return true;
-	
-	return false;
-}
-
-
-bool CWMouseXPDlg::StopTrialTimer()
-{
-	if(m_TrialTimerID && KillTimer(m_TrialTimerID))
-	{
-		m_TrialTimerID = 0;
-		return true;
-	}
-
-	return false;
-
-
-}
 
 
 bool CWMouseXPDlg::StopBTInteractionTimer()
@@ -1974,7 +1950,6 @@ bool CWMouseXPDlg::StartCommunication(char* devaddr, int port) //for microsoft s
 	catch(char* exception)
 	{
 		//AddLog(exception);
-		StopTrialTimer();
 		throw exception;
 	}
 	
@@ -2020,56 +1995,6 @@ void CWMouseXPDlg::AddLog(LPCSTR log)
 	this->iStatusLabel.EnableWindow(true);
 	this->iStatusLabel.SetWindowText(log);
 	
-}
-
-
-void CWMouseXPDlg::TrialTimerProc(
-   HWND hWnd,      // handle of CWnd that called SetTimer
-   UINT nMsg,      // WM_TIMER
-   UINT nIDEvent,   // timer identification
-   DWORD dwTime    // system time
-)
-{
-	if(!curInstance)
-		return;
-
-	
-
-	if(!(curInstance->StopTrialTimer()))
-		return; //it was already stopped
-	
-	if(curInstance->iStackUsed == EMSStack)
-	{
-		closesocket(curInstance->iSocket);
-	}
-	else
-	if(curInstance->iStackUsed == EWidcommStack)
-	{
-		curInstance->iWidcommHandler->CloseAndRevertEngineState();
-		curInstance->RevertToIdle();
-	
-	}
-	else
-	if(curInstance->iStackUsed == EBlueSoleilStack)
-	{
-		curInstance->iBlueSoleilHandler->CloseAndRevertEngineState();
-		curInstance->RevertToIdle();	
-	}
-	else
-	if(curInstance->iStackUsed == EToshStack)
-	{
-		curInstance->iToshHandler->CloseAndRevertEngineState();
-		curInstance->RevertToIdle();	
-	}
-
-	
-
-
-	curInstance->MessageBox("Trial-Use session timed-out...\r\n\r\n Please buy the full version by pressing the \"Buy\" button.","WMouseXP TRIAL",MB_OK|MB_TOPMOST|MB_ICONASTERISK);
-	curInstance->AddLog("Trial Time-Out...");
-
-	
-
 }
 
 
@@ -2921,7 +2846,7 @@ void CWMouseXPDlg::StartConnect()
 		{
 			closesocket(iSocket);      
 			WSACleanup();
-			StopTrialTimer();
+			
 		}
 		else
 		if(iStackUsed == EWidcommStack)
@@ -2929,7 +2854,7 @@ void CWMouseXPDlg::StartConnect()
 			iWidcommHandler->CloseAndRevertEngineState();
 			AddLog("Disconnected");
 			RevertToIdle();
-			StopTrialTimer();
+			
 
 			if(MSStackSupported()) //vista widcomm is based on MS
 			{
@@ -2944,7 +2869,7 @@ void CWMouseXPDlg::StartConnect()
 			iBlueSoleilHandler->CloseAndRevertEngineState();
 			AddLog("Disconnected");
 			RevertToIdle();
-			StopTrialTimer();			
+				
 		}
 		else
 		if(	iStackUsed == EToshStack)
@@ -2952,7 +2877,7 @@ void CWMouseXPDlg::StartConnect()
 			iToshHandler->CloseAndRevertEngineState();
 			AddLog("Disconnected");
 			RevertToIdle();
-			StopTrialTimer();			
+				
 		}
 
 	}
@@ -3008,50 +2933,7 @@ void CWMouseXPDlg::OnData(void *p_data, UINT len) //from WIDCOMM
 
 }
 
-/*
-void CWMouseXPDlg::OnConnectEvent(UINT32 event_code,unsigned char* devaddr) //from WIDCOMM
-{
 
-	if (PORT_EV_CONNECTED & event_code)
-    {
-			iThereWasASession = true;
-			
-			DWORD bufsize = 40;
-			
-			
-			//BD_ADDR_LEN
-			//convert to MS format and copy to iPrevDev, for example: (00:11:9F:D9:F1:79)
-			
-
-			sprintf(iPrevDev,"(%02X:%02X:%02X:%02X:%02X:%02X)",devaddr[0],devaddr[1],devaddr[2],devaddr[3],devaddr[4],devaddr[5]);
-
-
-
-
-			 
-
-			
-			iConnectButton.EnableWindow(true);
-			iConnectButton.SetWindowText("Disconnect");
-
-			HandleBTConnected();//this would start the trial timer if necessary
-			AddLog("Connection Active...");	
-    }
-	else    
-    if ( PORT_EV_CONNECT_ERR & event_code )
-    {
-        	iStatusLabel.SetWindowText("Connection closed.");
-			StopTrialTimer();
-			iWidcommHandler->CloseAndRevertEngineState();			
-			RevertToIdle();
-    }
-	else
-	{
-	    	iStatusLabel.SetWindowText("Unknown WIDCOMM event.");	
-			//Close();
-			//RevertToIdle();
-	}
-}*/
 
 
 void CWMouseXPDlg::OnConnected(BYTE* devaddr, int len)
@@ -3090,7 +2972,7 @@ void CWMouseXPDlg::OnConnected(BYTE* devaddr, int len)
 	}
 	else
 	{
-		HandleBTConnected();//this would start the trial timer if necessary
+		HandleBTConnected();
 	}
 
 	iThereWasASession = true;
@@ -3107,7 +2989,7 @@ void CWMouseXPDlg::OnDisconnected()
 	mydebug::log("OnDisconnected begin");
 
 		iStatusLabel.SetWindowText("Connection closed.");
-		StopTrialTimer();
+		
 		
 
 		if(iStackUsed == EWidcommStack)
@@ -3891,36 +3773,62 @@ void WINAPI SendJarThread (LPVOID lpParameter)
 
 
 					///////////////////////////////////////////////////
-					//make jar and send to device
+					//read jar and send to device
 
+					CFile file;
+					CFile cfile_object;
+					CHAR iTmpObexFilePath[MAX_PATH];
+					/* Search backward. */
+					CHAR ch('\\');
+					CHAR* pdest = strrchr( iTmpObexFilePath, ch );
 
-					HGLOBAL hResourceLoaded;		// handle to loaded resource 
-					HRSRC hRes;						// handle/ptr. to res. info. 
-					BYTE* lpResLock;				// pointer to resource data 
-					DWORD dwSizeRes;
+					if( pdest != NULL )
+					{
+						if( MAX_PATH > pdest - iTmpObexFilePath)
+							*(pdest+1) = NULL;
+					}					
 					
-
-					hRes = FindResource( NULL, MAKEINTRESOURCE(IDR_JAR3), "JAR" );
+					strcat(iTmpObexFilePath,KWmxpJarPathRelativeToReleaseExe);     
 					
-					if(hRes==NULL)
-						AfxMessageBox("rsc not found");
-					// loads the specified resource into global memory. 
-					hResourceLoaded = LoadResource( NULL, hRes ); 
+					if(file.Open( iTmpObexFilePath, CFile::modeRead))
+					{
+						
+						int flen = file.GetLength();
 
-					// get a pointer to the loaded resource!
-					lpResLock = (BYTE*)LockResource( hResourceLoaded ); 
+						if(flen > 0)
+						{
+							char szSampleText[100];
+							unsigned char* data = NULL;
+							data = (unsigned char*) malloc(flen);
 
-					// determine the size of the resource, so we know how much to write out to file!  
-					dwSizeRes = SizeofResource( NULL, hRes );
+							if(data)
+							{
+								if(flen == file.Read(data,flen))
+								{
+						
+									that->m_InstallPic.UnLoad();
+									that->m_InstallPic.Load(MAKEINTRESOURCE(IDR_GIF1),_T("GIF"));
+								
+								
+									that->iStep1Label.SetWindowText("Please accept file on phone...");																
 
-					
-					that->m_InstallPic.UnLoad();
-					that->m_InstallPic.Load(MAKEINTRESOURCE(IDR_GIF1),_T("GIF"));
-					
-					
-					that->iStep1Label.SetWindowText("Please accept file on phone...");																
-
-					that->SendFile(dev->iAddr,dev->iPort,lpResLock,dwSizeRes);
+									that->SendFile(dev->iAddr,dev->iPort,data, flen);
+								}
+								else
+								{
+									delete data;
+									throw "read mobile installer length not full";								
+								}
+								delete data;
+							}
+							else
+								throw "allocate mem for moile installer failed";
+						}
+						else
+							throw "read moile installer failed";
+					}
+					else
+						throw "open moile installer file failed";
 					
 					
 
@@ -4179,35 +4087,12 @@ void CWMouseXPDlg::OnButton1() //install it on phone
 		//NoteToDeveloper("WMouseXP will now try to send the Mobile Side program to your mobile phone via Bluetooth (WIDCOMM).\r\n\r\nIf either the sending or the installation on your phone fails,\r\n see the Help menu for other installation methods.");
 
 		
-		HGLOBAL hResourceLoaded;		// handle to loaded resource 
-		HRSRC hRes;						// handle/ptr. to res. info. 
-		BYTE* lpResLock;				// pointer to resource data 
-		DWORD dwSizeRes;
-		
-
-		hRes = FindResource( NULL, MAKEINTRESOURCE(IDR_JAR3), "JAR" );
-		
-		if(hRes==NULL)
-		{
-			AfxMessageBox("rsc not found");
-			return;
-		}
-
-		// loads the specified resource into global memory. 
-		hResourceLoaded = LoadResource( NULL, hRes ); 
-
-		// get a pointer to the loaded resource!
-		lpResLock = (BYTE*)LockResource( hResourceLoaded ); 
-
-		// determine the size of the resource, so we know how much to write out to file!  
-		dwSizeRes = SizeofResource( NULL, hRes );
-			
-
+	
 		
 		this->m_InstallOnPhoneButton.EnableWindow(false);
 		this->m_InstallOnPhoneButton.SetWindowText("Please Wait...");
 
-		if(!(iBlueSoleilHandler->StartSendFileSession(appWindow,&iConnectButton,&m_InstallPic,IDR_GIF,IDR_GIF1,_T("GIF"),&m_InstallOnPhoneButton,&iStep1Label,lpResLock, dwSizeRes)))
+		if(!(iBlueSoleilHandler->StartSendFileSession(appWindow,&iConnectButton,&m_InstallPic,IDR_GIF,IDR_GIF1,_T("GIF"),&m_InstallOnPhoneButton,&iStep1Label)))
 		{
 				this->iConnectButton.EnableWindow(true);
 				this->iConnectButton.SetWindowText("Connect");
@@ -4228,35 +4113,13 @@ void CWMouseXPDlg::OnButton1() //install it on phone
 		;//CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)WidcommSendJarThread,this,0,&iThreadID);	
 		//NoteToDeveloper("WMouseXP will now try to send the Mobile Side program to your mobile phone via Bluetooth (WIDCOMM).\r\n\r\nIf either the sending or the installation on your phone fails,\r\n see the Help menu for other installation methods.");
 
-		HGLOBAL hResourceLoaded;		// handle to loaded resource 
-		HRSRC hRes;						// handle/ptr. to res. info. 
-		BYTE* lpResLock;				// pointer to resource data 
-		DWORD dwSizeRes;
-		
-
-		hRes = FindResource( NULL, MAKEINTRESOURCE(IDR_JAR3), "JAR" );
-		
-		if(hRes==NULL)
-		{
-			AfxMessageBox("Internal resource not found, try Re-download and Install from www.ClearEvo.com");
-			return;
-		}
-
-		// loads the specified resource into global memory. 
-		hResourceLoaded = LoadResource( NULL, hRes ); 
-
-		// get a pointer to the loaded resource!
-		lpResLock = (BYTE*)LockResource( hResourceLoaded ); 
-
-		// determine the size of the resource, so we know how much to write out to file!  
-		dwSizeRes = SizeofResource( NULL, hRes );
-			
+	
 
 		
 		this->m_InstallOnPhoneButton.EnableWindow(false);
 		this->m_InstallOnPhoneButton.SetWindowText("Please Wait...");
 
-		if(!(iWidcommHandler->StartSendFileSession(appWindow,&iConnectButton,&m_InstallPic,IDR_GIF,IDR_GIF1,_T("GIF"),&m_InstallOnPhoneButton,&iStep1Label,lpResLock, dwSizeRes)))
+		if(!(iWidcommHandler->StartSendFileSession(appWindow,&iConnectButton,&m_InstallPic,IDR_GIF,IDR_GIF1,_T("GIF"),&m_InstallOnPhoneButton,&iStep1Label)))
 		{
 				this->iConnectButton.EnableWindow(true);
 				this->iConnectButton.SetWindowText("Connect");
@@ -4275,35 +4138,9 @@ void CWMouseXPDlg::OnButton1() //install it on phone
 	else if(stacktouse == EToshStack)
 	{
 			
-		HGLOBAL hResourceLoaded;		// handle to loaded resource 
-		HRSRC hRes;						// handle/ptr. to res. info. 
-		BYTE* lpResLock;				// pointer to resource data 
-		DWORD dwSizeRes;
-		
+	
 
-		hRes = FindResource( NULL, MAKEINTRESOURCE(IDR_JAR3), "JAR" );
-		
-		if(hRes==NULL)
-		{
-			AfxMessageBox("Internal resource not found, try Re-download and Install from www.ClearEvo.com");
-			return;
-		}
-
-		// loads the specified resource into global memory. 
-		hResourceLoaded = LoadResource( NULL, hRes ); 
-
-		// get a pointer to the loaded resource!
-		lpResLock = (BYTE*)LockResource( hResourceLoaded ); 
-
-		// determine the size of the resource, so we know how much to write out to file!  
-		dwSizeRes = SizeofResource( NULL, hRes );
-			
-
-		
-		this->m_InstallOnPhoneButton.EnableWindow(false);
-		this->m_InstallOnPhoneButton.SetWindowText("Please Wait...");
-
-		if(!(iToshHandler->StartSendFileSession(appWindow,&iConnectButton,&m_InstallPic,IDR_GIF,IDR_GIF1,_T("GIF"),&m_InstallOnPhoneButton,&iStep1Label,lpResLock, dwSizeRes)))
+		if(!(iToshHandler->StartSendFileSession(appWindow,&iConnectButton,&m_InstallPic,IDR_GIF,IDR_GIF1,_T("GIF"),&m_InstallOnPhoneButton,&iStep1Label)))
 		{
 				this->iConnectButton.EnableWindow(true);
 				this->iConnectButton.SetWindowText("Connect");
@@ -4504,14 +4341,14 @@ LRESULT CWMouseXPDlg::WindowProc( UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				closesocket(iSocket);      
 				WSACleanup();
-				StopTrialTimer();				
+					
 			}
 			else
 			if(iStackUsed == EWidcommStack)
 			{
 				iWidcommHandler->CloseAndRevertEngineState();				
 				RevertToIdle();
-				StopTrialTimer();
+				
 
 				if(MSStackSupported()) //vista widcomm is based on MS
 				{
@@ -4525,14 +4362,14 @@ LRESULT CWMouseXPDlg::WindowProc( UINT message, WPARAM wParam, LPARAM lParam)
 			{	
 				iBlueSoleilHandler->CloseAndRevertEngineState();				
 				RevertToIdle();
-				StopTrialTimer();			
+				
 			}
 			else
 			if(iStackUsed == EToshStack)
 			{
 				iToshHandler->CloseAndRevertEngineState();
 				RevertToIdle();
-				StopTrialTimer();			
+				
 			}
 
 			///////////////
@@ -4565,14 +4402,14 @@ LRESULT CWMouseXPDlg::WindowProc( UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				closesocket(iSocket);      
 				WSACleanup();
-				StopTrialTimer();				
+							
 			}
 			else
 			if(iStackUsed == EWidcommStack)
 			{
 				iWidcommHandler->CloseAndRevertEngineState();				
 				RevertToIdle();
-				StopTrialTimer();
+
 
 				if(MSStackSupported()) //vista widcomm is based on MS
 				{
@@ -4586,14 +4423,14 @@ LRESULT CWMouseXPDlg::WindowProc( UINT message, WPARAM wParam, LPARAM lParam)
 			{	
 				iBlueSoleilHandler->CloseAndRevertEngineState();				
 				RevertToIdle();
-				StopTrialTimer();			
+
 			}
 			else
 			if(iStackUsed == EToshStack)
 			{
 				iToshHandler->CloseAndRevertEngineState();
 				RevertToIdle();
-				StopTrialTimer();			
+						
 			}
 			///////////////
 
@@ -4669,14 +4506,14 @@ LRESULT CWMouseXPDlg::WindowProc( UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				closesocket(iSocket);      
 				WSACleanup();
-				StopTrialTimer();				
+						
 			}
 			else
 			if(iStackUsed == EWidcommStack)
 			{
 				iWidcommHandler->CloseAndRevertEngineState();				
 				RevertToIdle();
-				StopTrialTimer();
+				
 
 				if(MSStackSupported()) //vista widcomm is based on MS
 				{
@@ -4690,14 +4527,14 @@ LRESULT CWMouseXPDlg::WindowProc( UINT message, WPARAM wParam, LPARAM lParam)
 			{	
 				iBlueSoleilHandler->CloseAndRevertEngineState();				
 				RevertToIdle();
-				StopTrialTimer();			
+						
 			}
 			else
 			if(iStackUsed == EToshStack)
 			{
 				iToshHandler->CloseAndRevertEngineState();
 				RevertToIdle();
-				StopTrialTimer();			
+						
 			}
 			///////////////
 

@@ -16,7 +16,6 @@
 #define IDD_CHOOSE_DeviceDialog         142
 #define ID_ENTER                        148
 #define IDD_DIALOG1                     152
-#define IDR_JAR3                        162
 #define IDD_MAGNIFIER                   169
 #define IDD_CUSTOMCOMMANDS_DIALOG       173
 #define IDB_NUMPAD_BITMAP               176

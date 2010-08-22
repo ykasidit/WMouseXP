@@ -169,6 +169,15 @@ boolean exitCommanded;
 int commandCode;
 int InputMode;
 
+int help_tl_x;
+int help_tl_y;
+int help_width;
+int help_height;
+
+int exit_tl_x;
+int exit_tl_y;
+int exit_width;
+int exit_height;
 
 
 Thread service;
@@ -183,6 +192,11 @@ boolean iSSReqeustSent;
 
 String iDebugHint; //if not null then use as hint - for debug
     
+    private int g_img_tl_x;
+    private int g_img_tl_y;
+    private final int g_button_h;
+    private final int g_button_w;
+
     public MainCanvas(boolean suppress) {super(suppress);
         this.setFullScreenMode(true);
         
@@ -209,14 +223,24 @@ String iDebugHint; //if not null then use as hint - for debug
         status = "Starting Mobile Side";
         
         try {
-            if(getWidth()>165 && getHeight() > 180)
+            if(getWidth()>290 && getHeight() > 290)
+            buttonMap = Image.createImage("/combtnsbiggest.png");
+            else
+            if(getWidth()>190 && getHeight() > 190)
+            buttonMap = Image.createImage("/combtnsbigger.png");
+            else
+            if(getWidth()>170 && getHeight() > 170)
             buttonMap = Image.createImage("/combtnsbig.png");
             else
             buttonMap = Image.createImage("/combtns.png");
         } catch (IOException ex) {
             //ex.printStackTrace();
         }
-         
+
+        g_button_w = (buttonMap.getWidth()-6/*borders*/)/3;
+        g_button_h = (buttonMap.getHeight()-8/*borders*/)/4;
+
+        
         service = new Thread()
         {
             public void run()
@@ -320,6 +344,11 @@ String iDebugHint; //if not null then use as hint - for debug
                 
         g.drawImage(buttonMap,getWidth()/2,curDrawY,Graphics.BOTTOM|Graphics.HCENTER);        
 
+        g_img_tl_x = (getWidth()/2) - buttonMap.getWidth()/2;
+        g_img_tl_y = curDrawY - buttonMap.getHeight();
+
+      
+        
         //jump across middle pic
         curDrawY -= buttonMap.getHeight();
         ///////////////////////
@@ -361,9 +390,20 @@ String iDebugHint; //if not null then use as hint - for debug
         g.setFont(sfont);
         //g.setColor(0xaaaaaa);         
         //g.drawChars(clearevoweb,0,clearevoweb.length,getWidth()/2,getHeight(),Graphics.BOTTOM|Graphics.HCENTER);
-        //g.setColor(0x1122aa);         
+        //g.setColor(0x1122aa);
+        help_tl_x = 1;
+        help_tl_y = getHeight()-((font.getHeight()*6)/5);
+        help_width = font.charsWidth(leftsoftkey,0,leftsoftkey.length);
+        help_height = font.getHeight();
+        
+        exit_tl_x = getWidth() - (1 + font.charsWidth(rightsoftkey,0,rightsoftkey.length));
+        exit_tl_y = help_tl_y;
+        exit_width = font.charsWidth(rightsoftkey,0,rightsoftkey.length);
+        exit_height = help_height;
+
         g.drawChars(leftsoftkey,0,leftsoftkey.length,1,getHeight()-(font.getHeight()/5),Graphics.BOTTOM|Graphics.LEFT);
-        g.drawChars(rightsoftkey,0,rightsoftkey.length,getWidth()-1,getHeight()-(font.getHeight()/5),Graphics.BOTTOM|Graphics.RIGHT);            
+        g.drawChars(rightsoftkey,0,rightsoftkey.length,getWidth()-1,getHeight()-(font.getHeight()/5),Graphics.BOTTOM|Graphics.RIGHT);
+
         
         
     }
@@ -470,30 +510,18 @@ String iDebugHint; //if not null then use as hint - for debug
 
                 //////////////////////SOFTKEYS
                  else
-                if( GAME_A == getGameAction(keyCode) || NokiaKEY_SoftKey_Left == keyCode || MotoKEY_SoftKey_Left == keyCode || Math.abs(MotoKEY_SoftKey_Left) == keyCode/*Motorola V600: 21 = lsk*/)                                                        
-                {    
-                    //addLog("Showing Help...");
-                    Display.getDisplay(WMouseXP.curInstance).setCurrent(WMouseXP.curInstance.get_helpForm());
-                    return KInternalCommandDontSendToPC;
-                }
-                else
-                if( GAME_B == getGameAction(keyCode) || NokiaKEY_SoftKey_Right == keyCode || MotoKEY_SoftKey_Right == keyCode || Math.abs(MotoKEY_SoftKey_Right) == keyCode/*Motorola V600: 22 = rsk*/)                                                        
-                {    
-                    //addLog("Preparing Exit...");
-                    exitCommanded = true;
-                    cleanup();
-                    WMouseXP.curInstance.exitMIDlet();
-                    return KInternalCommandDontSendToPC;
-                }
+                 {
+                 if(!detectHelpOrExit(keyCode))
+                    {
+                        addLog("UnknownKey: "+keyCode);
+                        ret = (byte)KUnknownCommand;//addLog("Unknown Key");
+                    }
+                 }               
                 ///////////////////////END SOFTKEYS
         
         
         
-                else          
-                {   
-                    addLog("UnknownKey: "+keyCode);
-                    ret = (byte)KUnknownCommand;//addLog("Unknown Key");
-                }
+              
         
         
         return ret;
@@ -530,12 +558,126 @@ String iDebugHint; //if not null then use as hint - for debug
     repaint();
     serviceRepaints();
   }
-  
+
+   public void pointerPressed (int x, int y) {
+
+       if(y>=exit_tl_y && x>=exit_tl_x)
+       {
+           exitCommanded = true;
+                    cleanup();
+                    WMouseXP.curInstance.exitMIDlet();
+                    return;
+       }
+
+        if(y>=help_tl_y && x>=help_tl_x && x<=(help_tl_x+help_width) )
+       {
+           Display.getDisplay(WMouseXP.curInstance).setCurrent(WMouseXP.curInstance.get_helpForm());
+                    return;
+       }
+
+    if(iOs==null)
+        return;
+       
+       
+    if(x> g_img_tl_x && y > g_img_tl_y && x < g_img_tl_x+buttonMap.getWidth() && y < g_img_tl_y+buttonMap.getHeight() )
+    {
+        int c=-1;
+        int r=-1;
+
+        y = y - g_img_tl_y -1 /*upper border*/;
+        x = x - g_img_tl_x -1 /*left border*/;
+
+        //System.out.println("y "+y);
+        //System.out.println("x "+x);
+
+        for(int i=3;i>=0;i--)
+        {
+            
+         //           System.out.println("y>"+(g_button_h*i + (2*(i-1))));
+            if(y > g_button_h*i + (2*(i-1)) /* separator borders*/ )
+            {
+                r = i;
+                break;
+            }
+        }
+
+        for(int i=3;i>=0;i--)
+        {
+            if(x > g_button_w*i + (2*(i-1)) /* separator borders*/ )
+            {
+                c = i;
+                break;
+            }
+        }
+
+        if(r>=0 && c>=0)
+        {
+            if(r<3) //if not lowest * 0 # row...
+            {
+                int kc = (49+((r*(3))+c));
+                //System.out.println(""+r+","+c+":"+kc);
+                keyPressed(kc);
+            }
+            else
+            {
+                // r==3 lowest row
+                switch(c)
+                {
+                    case 0:
+                        keyPressed(KEY_STAR);
+                        break;
+                    case 1:
+                        keyPressed(KEY_NUM0);
+                        break;
+                    case 2:
+                        keyPressed(KEY_POUND);
+                        break;
+                    default:
+                        break;//should never reach here though
+                }
+
+                
+            }
+
+
+        }
+
+        //addLog("ptr "+x+","+y+"["+c+","+r+"]");
+              
+
+    }
+    
+  }
+  protected boolean detectHelpOrExit(int keyCode)
+    {
+            if( keyCode!=49 /*strangely it would pass the rest in emulator*/ && (GAME_A == getGameAction(keyCode) || NokiaKEY_SoftKey_Left == keyCode || MotoKEY_SoftKey_Left == keyCode || Math.abs(MotoKEY_SoftKey_Left) == keyCode/*Motorola V600: 21 = lsk*/))
+                {    
+                    //addLog("Showing Help...");
+                    //System.out.println("help "+keyCode);
+                    
+                    Display.getDisplay(WMouseXP.curInstance).setCurrent(WMouseXP.curInstance.get_helpForm());
+                    return true;
+                }
+                else
+                if( keyCode!=51 /*strangely it would pass the rest in emulator*/ && (GAME_B == getGameAction(keyCode) || NokiaKEY_SoftKey_Right == keyCode || MotoKEY_SoftKey_Right == keyCode || Math.abs(MotoKEY_SoftKey_Right) == keyCode/*Motorola V600: 22 = rsk*/))
+                {    
+                    //addLog("Preparing Exit...");
+                    //System.out.println("exit"+keyCode);
+                    
+                    
+                    exitCommanded = true;
+                    cleanup();            
+                    WMouseXP.curInstance.exitMIDlet();
+                    return true;
+                }
+
+            return false;
+  }
+
   protected void keyPressed(int keyCode)     
     {
           if(exitCommanded)
             return;
-      
     
       try
         {  
@@ -619,21 +761,7 @@ String iDebugHint; //if not null then use as hint - for debug
             }
             else //not connected
             {               
-                if( GAME_A == getGameAction(keyCode) || NokiaKEY_SoftKey_Left == keyCode || MotoKEY_SoftKey_Left == keyCode || Math.abs(MotoKEY_SoftKey_Left) == keyCode/*Motorola V600: 21 = lsk*/)                                                        
-                {    
-                    //addLog("Showing Help...");
-                    Display.getDisplay(WMouseXP.curInstance).setCurrent(WMouseXP.curInstance.get_helpForm());
-                    return;
-                }
-                else
-                if( GAME_B == getGameAction(keyCode) || NokiaKEY_SoftKey_Right == keyCode || MotoKEY_SoftKey_Right == keyCode || Math.abs(MotoKEY_SoftKey_Right) == keyCode/*Motorola V600: 22 = rsk*/)                                                        
-                {    
-                    //addLog("Preparing Exit...");
-                    exitCommanded = true;
-                    cleanup();            
-                    WMouseXP.curInstance.exitMIDlet();
-                    return;
-                }
+                detectHelpOrExit(keyCode);
             }
         }
         catch(Exception e)
@@ -649,6 +777,7 @@ String iDebugHint; //if not null then use as hint - for debug
   
   protected void keyRepeated(int keyCode) 
      {
+
       
       if(exitCommanded)
             return;
@@ -760,7 +889,7 @@ String iDebugHint; //if not null then use as hint - for debug
             // Obtain local device object
            
             // Do the service search on all found devices.
-            // Note: don’t use this UUID in your own MIDlets.
+            // Note: donï¿½t use this UUID in your own MIDlets.
             // You have to create an own UUID for each MIDlet that you write:
             //OLD String service_UUID = "27b8f85a1d7411dc83140800200c9a66";
 
@@ -785,7 +914,7 @@ String iDebugHint; //if not null then use as hint - for debug
             hinttext = hintStarting;
             addLog("Starting service");
             //StreamConnectionNotifier notifier = (StreamConnectionNotifier) Connector.open( url );
-            notifier = (StreamConnectionNotifier) Connector.open( url, Connector.READ_WRITE);
+            notifier = (StreamConnectionNotifier) Connector.open( url, Connector.WRITE);
             
             // Wait on someone to connect (note: you can cancel this wait
             // only if you call notifier.close() from another thread.

@@ -91,7 +91,7 @@ CWidcommHandler::CWidcommHandler()
 	}	
 	
 	
-	wcscat(iTmpObexFilePath,_L("WMouseXP.jar"));
+	wcscat(iTmpObexFilePath, KWmxpJarPathRelativeToReleaseExe_wc );
 
 	
 	//GetFullPathNameW(_L("WMouseXP.jar"),KPATHMAXLEN,iTmpObexFilePath,NULL);
@@ -257,7 +257,7 @@ bool CWidcommHandler::StartRemoteControlSession(HWND hwnd, CButton* buttontodisa
 
 }
 
-bool CWidcommHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label, BYTE* fdata, int fdatalen)
+bool CWidcommHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label)
 {
 	if(iButton)
 		return false;
@@ -273,9 +273,7 @@ bool CWidcommHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CP
 	iButton = button;
 	iAnimRscType = rsctype;
 	iLabel = label;
-	this->iFileData = fdata;
-	this->iFileLen = fdatalen;
-
+	
 
 	iIcon->Load(MAKEINTRESOURCE(iSearchAnim),iAnimRscType);
 	iIcon->ShowWindow(true);
@@ -390,50 +388,13 @@ void CWidcommHandler::OnDiscoveryComplete()
 				
 					
 					///////////////////////////////////////////////////
-						//make jar and send to device
+					
 
 
-						HGLOBAL hResourceLoaded;		// handle to loaded resource 
-						HRSRC hRes;						// handle/ptr. to res. info. 
-						BYTE* lpResLock;				// pointer to resource data 
-						DWORD dwSizeRes;
-						
-
-						hRes = FindResource( NULL, MAKEINTRESOURCE(IDR_JAR3), "JAR" );
-						
-						if(hRes==NULL)
-							MessageBox(iHwnd,"Internal resource missing.","Send Failed",MB_OK | MB_ICONASTERISK);
-						// loads the specified resource into global memory. 
-						hResourceLoaded = LoadResource( NULL, hRes ); 
-
-						// get a pointer to the loaded resource!
-						lpResLock = (BYTE*)LockResource( hResourceLoaded ); 
-
-						// determine the size of the resource, so we know how much to write out to file!  
-						dwSizeRes = SizeofResource( NULL, hRes );
-
-						
-
-						CFile file;
-						CString path(iTmpObexFilePath);
-						
-						
-
-						if(!file.Open( path, CFile::modeCreate | CFile::modeWrite|CFile::typeBinary))
-						{
-							//showerr
-							MessageBox(iHwnd,"Create temp file failed.","Send Failed",MB_OK | MB_ICONASTERISK);
-							RevertToIdle(); //add hwnd, icon movement, icon animation rsc numbers, etc...
-							return;	
-
-						}
-						else
+					
 						{
 						
-							//write to file
-							file.Write(lpResLock,dwSizeRes);
-							file.Flush();
-							file.Close();
+						
 							
 							//send							
 							if(OPP_CLIENT_SUCCESS == Push(iDiscoveringDevice,iTmpObexFilePath,SdpRecs[i]))

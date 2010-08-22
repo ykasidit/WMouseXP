@@ -66,7 +66,7 @@ enum EWidcommHandlerState
 	~CWidcommHandler();
 	static bool WidcommSupported();
 
-	bool StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label, BYTE* fdata, int fdatalen);
+	bool StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label);
 	bool StartRemoteControlSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label, MRemoteControlCaller* caller);
 	
 	void CloseAndRevertEngineState();

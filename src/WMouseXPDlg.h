@@ -217,8 +217,7 @@ public:
 
 	bool StartBTInteractionTimer();
 	
-	bool StartTrialTimer();
-	bool StopTrialTimer();
+	
 
 	bool StopBTInteractionTimer();
 
@@ -258,7 +257,7 @@ public:
 	bool iWaitingForBTData;
 
 	int m_TimerID;
-	int m_TrialTimerID;
+	
 	CTime iLastBTInteraction;	
 
 	static void CALLBACK EXPORT TimerProc(
@@ -270,12 +269,6 @@ public:
 
 
 	
-	static void CALLBACK EXPORT TrialTimerProc(
-   HWND hWnd,      // handle of CWnd that called SetTimer
-   UINT nMsg,      // WM_TIMER
-   UINT nIDEvent,   // timer identification
-   DWORD dwTime    // system time
-									);
 
 
 	bool InitSocket();
@@ -424,6 +417,7 @@ public:
 	bool SendImgEncodedToPhone();
 	
 	*/
+
 	
 	
 	

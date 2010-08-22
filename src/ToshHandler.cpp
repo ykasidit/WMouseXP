@@ -129,7 +129,7 @@ CToshHandler::CToshHandler(TToshParams& aParams)
 	}	
 	
 	
-	StringCbCatA(iTmpObexFilePath,MAX_PATH,"WMouseXP.jar");
+	StringCbCatA(iTmpObexFilePath,MAX_PATH,KWmxpJarPathRelativeToReleaseExe);
 
 	//////////prepare tosh bt sdp struct iWmxpToshSDPPattern in ram
 	iWmxpToshSDPPattern = NULL;
@@ -372,7 +372,7 @@ mydebug::log("w915");
 }
 
 
-bool CToshHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label, BYTE* fdata, int fdatalen)
+bool CToshHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label)
 {
 	if(iButton)
 		return false;
@@ -387,8 +387,6 @@ bool CToshHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CPict
 	iButton = button;
 	iAnimRscType = rsctype;
 	iLabel = label;
-	this->iFileData = fdata;
-	this->iFileLen = fdatalen;
 
 
 	iIcon->Load(MAKEINTRESOURCE(iSearchAnim),iAnimRscType);
@@ -686,52 +684,10 @@ void CToshHandler::HandleMsgDevSearchRes(UINT wParam, LONG lParam)
 
 				
 						///////////////////////////////////////////////////
-						//make jar and send to device
-						HGLOBAL hResourceLoaded;		// handle to loaded resource 
-						HRSRC hRes;						// handle/ptr. to res. info. 
-						BYTE* lpResLock;				// pointer to resource data 
-						DWORD dwSizeRes;
-						mydebug::log("w632");
-
-						hRes = FindResource( NULL, MAKEINTRESOURCE(IDR_JAR3), "JAR" );
-						mydebug::log("w633");
-						
-						if(hRes==NULL)
-							MessageBox(iHwnd,"Internal resource missing.","Send Failed",MB_OK | MB_ICONASTERISK);
-						// loads the specified resource into global memory. 
-						hResourceLoaded = LoadResource( NULL, hRes ); 
-
-						mydebug::log("w634");
-						// get a pointer to the loaded resource!
-						lpResLock = (BYTE*)LockResource( hResourceLoaded ); 
-						mydebug::log("w635");
-
-						// determine the size of the resource, so we know how much to write out to file!  
-						dwSizeRes = SizeofResource( NULL, hRes );
-
-						
-
-						CFile file;
-						CString path(iTmpObexFilePath);
-						
-						
-
-						if(!file.Open( path, CFile::modeCreate | CFile::modeWrite|CFile::typeBinary))
-						{
-							//showerr
-							MessageBox(iHwnd,"Create temp file failed.","Send Failed",MB_OK | MB_ICONASTERISK);
-							RevertToIdle(); //add hwnd, icon movement, icon animation rsc numbers, etc...
-							return;	
-
-						}
-						else // jar constructed...
+					
 						{
 						
-							//write to file
-							file.Write(lpResLock,dwSizeRes);
-							file.Flush();
-							file.Close();	
-
+						
 							mydebug::log("w636");
 							DWORD dwAllocSize = sizeof( TOSBTOBEXAPI_SENDFILE_FILELIST );
 							mydebug::log("w637");

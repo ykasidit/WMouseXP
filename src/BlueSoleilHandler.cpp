@@ -100,7 +100,7 @@ CBlueSoleilHandler::CBlueSoleilHandler()
 	}	
 	
 	
-	StringCbCatA(iTmpObexFilePath,MAX_PATH,"WMouseXP.jar");
+	StringCbCatA(iTmpObexFilePath,MAX_PATH,KWmxpJarPathRelativeToReleaseExe);
 
 	
 	//GetFullPathNameW(_L("WMouseXP.jar"),KPATHMAXLEN,iTmpObexFilePath,NULL);
@@ -292,7 +292,7 @@ bool CBlueSoleilHandler::StartRemoteControlSession(HWND hwnd, CButton* buttontod
 
 }
 
-bool CBlueSoleilHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label, BYTE* fdata, int fdatalen)
+bool CBlueSoleilHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton, CPictureEx* icon, int searchinganimrsc, int sendinganimrsc, LPTSTR rsctype, CButton* button,CStatic* label)
 {
 	if(iButton)
 		return false;
@@ -308,8 +308,6 @@ bool CBlueSoleilHandler::StartSendFileSession(HWND hwnd, CButton* connectbutton,
 	iButton = button;
 	iAnimRscType = rsctype;
 	iLabel = label;
-	this->iFileData = fdata;
-	this->iFileLen = fdatalen;
 
 
 	iIcon->Load(MAKEINTRESOURCE(iSearchAnim),iAnimRscType);
@@ -795,50 +793,9 @@ void CBlueSoleilHandler::OnInquiryComplete ()
 				
 					
 					///////////////////////////////////////////////////
-						//make jar and send to device
-
-
-						HGLOBAL hResourceLoaded;		// handle to loaded resource 
-						HRSRC hRes;						// handle/ptr. to res. info. 
-						BYTE* lpResLock;				// pointer to resource data 
-						DWORD dwSizeRes;
-						
-
-						hRes = FindResource( NULL, MAKEINTRESOURCE(IDR_JAR3), "JAR" );
-						
-						if(hRes==NULL)
-							MessageBox(iHwnd,"Internal resource missing.","Send Failed",MB_OK | MB_ICONASTERISK);
-						// loads the specified resource into global memory. 
-						hResourceLoaded = LoadResource( NULL, hRes ); 
-
-						// get a pointer to the loaded resource!
-						lpResLock = (BYTE*)LockResource( hResourceLoaded ); 
-
-						// determine the size of the resource, so we know how much to write out to file!  
-						dwSizeRes = SizeofResource( NULL, hRes );
-
-						
-
-						CFile file;
-						CString path(iTmpObexFilePath);
 						
 						
-
-						if(!file.Open( path, CFile::modeCreate | CFile::modeWrite|CFile::typeBinary))
 						{
-							//showerr
-							MessageBox(iHwnd,"Create temp file failed.","Send Failed",MB_OK | MB_ICONASTERISK);
-							RevertToIdle(); //add hwnd, icon movement, icon animation rsc numbers, etc...
-							return;	
-
-						}
-						else // jar constructed...
-						{
-						
-							//write to file
-							file.Write(lpResLock,dwSizeRes);
-							file.Flush();
-							file.Close();	
 																	
 							
 							//send file via OBEX object push to this device...
@@ -1299,7 +1256,7 @@ void CBlueSoleilHandler::OnSPPConnectionStatus(DWORD dwServerHandle, BYTE* lpBdA
 			iConnectionHandle = 0;
 			memset(iConnectedDevice,0,6);
 			
-			iCaller->OnDisconnected();	//use this instead of only RevertToIdle so main dlg can call stoptrialtimer also!
+			iCaller->OnDisconnected();	//use this instead of only RevertToIdle
 			RevertToIdle();
 
 		}
@@ -1325,7 +1282,7 @@ void CBlueSoleilHandler::OnError(DWORD dwErrorCode)
 			iConnectionHandle = 0;
 			memset(iConnectedDevice,0,6);
 			
-			iCaller->OnDisconnected();//use this instead of RevertToIdle so main dlg can call stoptrialtimer also!
+			iCaller->OnDisconnected();//use this instead of RevertToIdle
 			RevertToIdle();
 
 		}

@@ -19,7 +19,6 @@ HIDR_MAINFRAME                          0x20080
 HIDR_GIF1                               0x20085
 HIDR_GIF                                0x20086
 HIDR_MENU1                              0x20089
-HIDR_JAR3                               0x200A2
  
 // Dialogs (IDD_*) 
 HIDD_ABOUTBOX                           0x20064
