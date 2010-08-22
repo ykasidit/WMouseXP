@@ -394,7 +394,7 @@ void CWidcommHandler::OnDiscoveryComplete()
 					
 						{
 						
-						
+							//AfxMessageBox(CString(iTmpObexFilePath));
 							
 							//send							
 							if(OPP_CLIENT_SUCCESS == Push(iDiscoveringDevice,iTmpObexFilePath,SdpRecs[i]))

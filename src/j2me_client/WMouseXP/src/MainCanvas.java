@@ -60,7 +60,7 @@ public class MainCanvas extends GameCanvas {
     
     StreamConnectionNotifier notifier;
     OutputStream iOs; 
-    InputStream iIs;
+    //InputStream iIs;
         
     byte[] sendbuf;
     
@@ -181,13 +181,13 @@ int exit_height;
 
 
 Thread service;
-Thread iReaderThread;
+//Thread iReaderThread;
 
 ////////////screenshot of computer
-byte[] iPicReadBuff;
+/*byte[] iPicReadBuff;
 Image iPicImg;
 boolean iShowScreen;
-boolean iSSReqeustSent;
+boolean iSSReqeustSent;*/
 //////////////////
 
 String iDebugHint; //if not null then use as hint - for debug
@@ -251,13 +251,13 @@ String iDebugHint; //if not null then use as hint - for debug
         service.start();
         
         
-        try{
+        /*try{
         iPicReadBuff = new byte[100000];
         }
         catch(Exception e)
         {
         iPicReadBuff = null; //flag that this phone doesn't support enough ram to use the show screen on phone
-        }
+        }*/
         
         
         
@@ -297,12 +297,12 @@ String iDebugHint; //if not null then use as hint - for debug
     
     public void paint(Graphics g) {
         
-        if(iPicImg!=null)
+        /*if(iPicImg!=null)
             {
                 g.drawImage(iPicImg,0,0,Graphics.TOP|Graphics.LEFT);     
                 return;
             }
-        
+        */
         /*if(iShowScreen)
         {   
             if(iPicImg!=null)
@@ -436,7 +436,7 @@ String iDebugHint; //if not null then use as hint - for debug
                 
                 else
                 if(keyCode == KEY_NUM4 || keyCode == KE61KEY_NUM4 || keyCode == (KE61KEY_NUM4-KE61SHIFT_DIFF))                                                      
-                {   ret = (byte)KRequestSSPNG;addLog("Show PC Screen");
+                {   ret = (byte)KMyComputer;addLog("My Computer");
                 }
                 else
                 if(keyCode == KEY_NUM5 || keyCode == KE61KEY_NUM5 || keyCode == (KE61KEY_NUM5-KE61SHIFT_DIFF))                                                      
@@ -690,9 +690,9 @@ String iDebugHint; //if not null then use as hint - for debug
                 
                 int sendlen = 2;//default - except KRequestSSPNG => 6
                 
-                if(iPicReadBuff != null)
+                //if(iPicReadBuff != null)
                 {
-                 if(commandCode == KRequestSSPNG )
+                 /*if(commandCode == KRequestSSPNG )
                     {
                         if(iShowScreen == false)
                         {
@@ -722,16 +722,16 @@ String iDebugHint; //if not null then use as hint - for debug
                         }
                     
                     }
-                 else
+                 else*/
                  {
                 sendbuf[0] = (byte)(KKeyPressedCode*InputMode);
                 sendbuf[1] = (byte) commandCode;
                  }
                 }
-                else
+                /*else
                 {
                     //TODO: show alert this phone doesn't have enough ram to use show screen feature
-                }
+                }*/
                 
                 /////////////send
                 iOs.write(sendbuf,0,sendlen);                
@@ -741,7 +741,7 @@ String iDebugHint; //if not null then use as hint - for debug
                 ActivityCharNext();
                 
                 
-                if(commandCode == KRequestSSPNG && iShowScreen == true)
+                /*if(commandCode == KRequestSSPNG && iShowScreen == true)
                 {
                     //TODO: notify() reader thread to start reading         
                     if(iReaderThread!=null && iReaderThread.isAlive())
@@ -756,7 +756,7 @@ String iDebugHint; //if not null then use as hint - for debug
                     
                     
                     //reader thread would then start a chain reaction: it would then send the request itself until iShowScreen is false again
-                }   
+                }   */
                 
             }
             else //not connected
@@ -925,8 +925,8 @@ String iDebugHint; //if not null then use as hint - for debug
 
             //removeCommand(WMouseXP.curInstance.get_okCommand1());  
             
-            iSSReqeustSent = false;
-            iShowScreen = false;
+            //iSSReqeustSent = false;
+            //iShowScreen = false;
 
             StreamConnection con = (StreamConnection) notifier.acceptAndOpen();   
           
@@ -965,8 +965,8 @@ String iDebugHint; //if not null then use as hint - for debug
 
 
             //// open input stream        
-            InputStream is = con.openInputStream();
-            iIs = is;
+            //InputStream is = con.openInputStream();
+            //iIs = is;
 
             // open output stream
             OutputStream os = con.openOutputStream();        
@@ -976,7 +976,7 @@ String iDebugHint; //if not null then use as hint - for debug
 
             //TODO: Start reader thread - read from iOs
             
-            iReaderThread = new Thread()
+           /* iReaderThread = new Thread()
             {
                 public void run()
                 {
@@ -1092,7 +1092,7 @@ String iDebugHint; //if not null then use as hint - for debug
             
             
             iReaderThread.start();
-            setHintDebug("started reader");     
+            setHintDebug("started reader");   */
             //iReaderThread = 
 
 
@@ -1136,7 +1136,7 @@ String iDebugHint; //if not null then use as hint - for debug
             ////////////////////                      
 
             // close input stream
-            try{
+            /*try{
             if(is!=null)
             {
                 is.close();               
@@ -1151,7 +1151,7 @@ String iDebugHint; //if not null then use as hint - for debug
                 {
                     Thread.currentThread().sleep(700);  //give some time to make sure if exits itself
                    iReaderThread = null;                   
-                }            
+                }            */
                 //////////////////////
             
             ////////////////////

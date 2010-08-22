@@ -50,7 +50,7 @@ public:
 	virtual bool RFCOMMWrite(BYTE* data, USHORT len, USHORT& lenwritten)=0;
 };
 
-#define KWmxpJarPathRelativeToReleaseExe ",,\j2me_client\WMouseXP\dist\WMouseXP.jar"
-#define KWmxpJarPathRelativeToReleaseExe_wc _L(",,\j2me_client\WMouseXP\dist\WMouseXP.jar")
+#define KWmxpJarPathRelativeToReleaseExe "..\\j2me_client\\WMouseXP\\dist\\WMouseXP.jar"
+#define KWmxpJarPathRelativeToReleaseExe_wc _L("..\\j2me_client\\WMouseXP\\dist\\WMouseXP.jar")
 
 #endif

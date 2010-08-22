@@ -2896,6 +2896,7 @@ void CWMouseXPDlg::RevertToIdle()
 	
 	iConnectButton.EnableWindow(true);
 	iConnectButton.SetWindowText("Connect");
+	m_InstallOnPhoneButton.SetWindowText("Send && Install on phone");
 	m_InstallOnPhoneButton.EnableWindow(true);
 
 	m_loadingGif.Stop();
