@@ -76,14 +76,12 @@ As for the mobile-side j2me client - use [Netbeans IDE](http://www.netbeans.org/
 
 History
 =======
-In the past WMouseXP was a shareware program. Now, since my work has got much more deep and challenging - developing network-test app engines decoding GSM RR/CC/MM, WCDMA RRC, vendor-specific L1 packets, I came to learn much more from the Free-Software/Open-source world - and now mainly using Ubuntu GNU/Linux. Now I want to give my small contribution back to the society too - so I release it under GPL. 
 
-Apart from that, I need much more focus on my work and peaceful rest on weekends. I don't want to have conflicts/distraction of "commercial"/demanding/committed interest/efforts with my job/specialization. Happiness comes whan you are satisfied with what you have - after working moderately/balanced - not too much/less - so I think it should be "enough" commercial work to focus on my job. 
+In the past WMouseXP released as shareware only. 
 
-Another point that touched me was solving licence activation problems (of the DRM anti-features) especially when the customer already bought the full-version serial and then can't use it because of the DRM - and has to mail the support, wait, work hard to try solutions, just to get over the DRM.
+Then, since my work has got much more deep and challenging - developing network-test app engines decoding GSM RR/CC/MM, WCDMA RRC, vendor-specific L1 packets, I came to learn much more from the Free-Software/Open-source world - and now mainly using Ubuntu GNU/Linux, I want to give my small contribution back to the society too - so I provide an alternative open-source/free-software release under GPL too. For a long time, it was released as GPL only. 
 
-As now I don't have personal commercial/closed apps to distract me, I hope I can use more weekends time on learning GSM/WCDMA and related free-software/open-source projects: trying OsmocomBB, OpenBSC, etc. Also, use more time away from the computer (as I easily have neck-pain when using the computer after many years of coding and sitting too long) by jogging, cooking, travel and my home-brewed biodiesel hobby.
-
+Lately, after many months of GPL only, due to many reasons, I think it's more suitable to release the commercial version too so users can have a choice of easier installation/setup, while I can contribute some of the revenue to people in kiva.org (as I used to during the commercial/shareware only era) as well as get something extra (during the long GPL only release era - there was no income/donation at all - not sustainable to cover even the hosting costs). So I learn/decide to take this more moderate/middle way. Now (middle on Jan 2011) WMouseXP is a dual-licensed software. The main shareware release/version on www.ClearEvo.com is a bit easier to use/setup (using a commercial installer too) and is more simple to run/start, especially for non-tech users. The open-source/free-software version is provided here.
 
 *All the best wishes,
 Kasidit*
