@@ -2,7 +2,7 @@ WMouseXP Bluetooth Presentation Remote Control Software
 =====
 WMouseXP turns compatible java-enabled and S60 phones into a wireless presenter-mouse and media player remote-control for your computer/notebook. For Windows XP.
 
-![WMouseXP PC-Side](http://www.clearevo.com/wmousexp/WMouseXP_bluetooth_presenter_remote.jpg)
+![WMouseXP PC-Side](http://www.clearevo.com/wmousexp/WMouseXP_bluetooth_presenter_remote_oss.jpg)
 
 ![WMouseXP Mobile-Side](http://www.clearevo.com/wmousexp/WMouseXP_j2me_bluetooth_remote.gif)
 
